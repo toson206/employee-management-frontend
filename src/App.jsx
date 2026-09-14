@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import AuthPage from './components/AuthPage';
-import Dashboard from './components/Dashboard';
+import React, { useState } from 'react';
+import Navbar from './components/layout/Navbar';
+import AuthPage from './pages/AuthPage';
+import DashboardPage from './pages/DashboardPage';
+import EmployeesPage from './pages/EmployeesPage';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(() => {
@@ -12,6 +14,8 @@ export default function App() {
     }
   });
 
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'employees'
+
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
     localStorage.setItem('employee_mgmt_user', JSON.stringify(user));
@@ -22,13 +26,31 @@ export default function App() {
     localStorage.removeItem('employee_mgmt_user');
   };
 
+  if (!currentUser) {
+    return <AuthPage onLoginSuccess={handleLoginSuccess} />;
+  }
+
   return (
-    <div className="App">
-      {currentUser ? (
-        <Dashboard user={currentUser} onLogout={handleLogout} />
-      ) : (
-        <AuthPage onLoginSuccess={handleLoginSuccess} />
-      )}
+    <div className="min-h-screen bg-slate-50 flex flex-col font-['Inter',sans-serif]">
+      {/* Thanh điều hướng Navbar dùng chung */}
+      <Navbar
+        user={currentUser}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onLogout={handleLogout}
+      />
+
+      {/* Nội dung trang theo Tab */}
+      <main className="flex-1 flex flex-col">
+        {activeTab === 'dashboard' ? (
+          <DashboardPage
+            user={currentUser}
+            onNavigateToEmployees={() => setActiveTab('employees')}
+          />
+        ) : (
+          <EmployeesPage user={currentUser} />
+        )}
+      </main>
     </div>
   );
 }

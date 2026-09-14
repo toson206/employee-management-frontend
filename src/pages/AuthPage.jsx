@@ -125,7 +125,7 @@ export default function AuthPage({ onLoginSuccess }) {
 
         {/* Thông báo lỗi */}
         {error && (
-          <div className="mb-5 flex items-start gap-3 p-3.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-sm animate-shake">
+          <div className="mb-5 flex items-start gap-3 p-3.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-sm">
             <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
@@ -223,7 +223,6 @@ export default function AuthPage({ onLoginSuccess }) {
             )}
           </button>
         </form>
-
       </div>
     </div>
   );
